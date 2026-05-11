@@ -1,0 +1,16 @@
+{
+  "name": "Affirmation DJ",
+  "short_name": "Affirmation",
+  "description": "毎日を名言で彩るアファメーションアプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8e44ad",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
