@@ -13,6 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
 
   useEffect(() => {
     setHydrated(true);
@@ -60,8 +61,6 @@ export default function Home() {
   };
 
   if (!hydrated) return null;
-
-  const [showAdd, setShowAdd] = useState(false);
 
   return (
     <>
