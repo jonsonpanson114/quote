@@ -38,11 +38,11 @@ body {
   font-family: var(--font-noto-serif-jp), serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background: linear-gradient(-45deg, #f3e5f5, #e1f5fe, #e8f5e9, #fff9c4);
   background-size: 400% 400%;
-  animation: fluidBackground 15s ease infinite;
+  animation: fluidBackground 30s ease infinite; /* Slower */
   display: flex;
-  flex-direction: column; /* Changed to column */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem 0;
@@ -56,31 +56,24 @@ body {
 
 .glass-container {
   width: 90%;
-  max-width: 500px;
-  padding: 2.5rem;
-  background: var(--card-bg);
+  max-width: 600px;
+  padding: 4rem 2rem;
+  background: transparent; /* More subtle */
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--card-border);
-  border-radius: 2rem;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
   text-align: center;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.glass-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.25);
+  transition: opacity 0.5s ease;
 }
 
 .quote-text {
-  font-size: 1.8rem;
-  font-weight: 600;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem; /* Slightly smaller */
+  font-weight: 300; /* Lighter */
+  line-height: 2;
+  margin-bottom: 2rem;
   color: var(--text-primary);
+  letter-spacing: 0.05em;
 }
 
 .quote-author {
@@ -151,4 +144,9 @@ body {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

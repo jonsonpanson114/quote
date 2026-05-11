@@ -61,6 +61,8 @@ export default function Home() {
 
   if (!hydrated) return null;
 
+  const [showAdd, setShowAdd] = useState(false);
+
   return (
     <>
       <main className="glass-container" onClick={handleShout}>
@@ -72,102 +74,84 @@ export default function Home() {
           />
         ))}
         
-        <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+        <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
           <button 
             className="btn-circle" 
-            style={{ width: '40px', height: '40px' }}
+            style={{ width: '36px', height: '36px', opacity: 0.5 }}
+            onClick={(e) => { e.stopPropagation(); setShowAdd(!showAdd); }}
+            title="言葉を追加"
+          >
+            {showAdd ? <Pause size={18} /> : <SkipForward size={18} style={{ transform: 'rotate(90deg)' }} />}
+          </button>
+          <button 
+            className="btn-circle" 
+            style={{ width: '36px', height: '36px', opacity: 0.5 }}
             onClick={(e) => { e.stopPropagation(); requestNotificationPermission(); }}
             title="通知を有効にする"
           >
-            <Volume2 size={20} />
+            <Volume2 size={18} />
           </button>
         </div>
 
-        <div className="quote-content">
+        <div className="quote-content" style={{ opacity: isLoading ? 0.3 : 1, transition: 'opacity 0.3s' }}>
           <p className="quote-text">
-            {currentQuote?.text || "名言を読み込み中..."}
+            {currentQuote?.text || "..."}
           </p>
-          <p className="quote-author">— {currentQuote?.author || "..."}</p>
+          <p className="quote-author" style={{ opacity: 0.5 }}>{currentQuote?.author}</p>
         </div>
 
-        <div className="controls">
-          <button 
-            className="btn-circle" 
-            onClick={(e) => {
-              e.stopPropagation();
-              setRandomQuote();
-            }}
-            title="シャッフル"
-          >
-            <RefreshCw size={24} />
-          </button>
+        <div className="controls" style={{ marginTop: '4rem' }}>
           <button 
             className={`btn-circle ${isLoading ? 'loading' : ''}`}
             onClick={handlePlay}
             disabled={isLoading}
-            title={isPlaying ? "再生中" : "再生"}
+            style={{ width: '80px', height: '80px', background: 'transparent', border: '1px solid var(--card-border)' }}
           >
             {isLoading ? (
-              <RefreshCw size={28} className="animate-spin" />
+              <RefreshCw size={32} className="animate-spin" />
             ) : isPlaying ? (
-              <Pause size={28} />
+              <Pause size={32} />
             ) : (
-              <Play size={28} fill="currentColor" />
+              <Play size={32} style={{ marginLeft: '4px' }} />
             )}
           </button>
-          <button className="btn-circle" title="次へ">
-            <SkipForward size={24} />
-          </button>
-        </div>
-
-        <div style={{ marginTop: '1.5rem', opacity: 0.6, fontSize: '0.8rem' }}>
-          <Volume2 size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
-          Google AI Voice: Neural2-C
         </div>
       </main>
 
-      <div className="quote-management" style={{ marginTop: '3rem', width: '90%', maxWidth: '500px' }}>
-        <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', opacity: 0.8, color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>自分の名言を追加</h2>
-        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-          <input 
-            type="text" 
-            id="new-quote"
-            placeholder="ここに名言を入力..."
-            style={{ 
-              flex: 1, 
-              padding: '1rem', 
-              borderRadius: '1rem', 
-              border: '1px solid var(--card-border)', 
-              background: 'var(--card-bg)',
-              color: 'var(--text-primary)',
-              backdropFilter: 'blur(10px)',
-              outline: 'none'
-            }}
-          />
-          <button 
-            onClick={() => {
-              const input = document.getElementById('new-quote') as HTMLInputElement;
-              if (input.value) {
-                useQuoteStore.getState().addQuote(input.value, '自分');
-                input.value = '';
-                alert('名言リストに追加しました！');
-              }
-            }}
-            style={{ 
-              padding: '0 1.5rem', 
-              borderRadius: '1rem', 
-              border: 'none', 
-              background: 'var(--accent-soft)', 
-              color: 'white',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-            }}
-          >
-            追加
-          </button>
+      {showAdd && (
+        <div className="quote-management" style={{ marginTop: '2rem', width: '90%', maxWidth: '400px', animation: 'fadeIn 0.3s ease' }}>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <input 
+              type="text" 
+              id="new-quote"
+              placeholder="新しい言葉..."
+              style={{ 
+                flex: 1, 
+                padding: '0.8rem', 
+                borderRadius: '0.5rem', 
+                border: 'none', 
+                background: 'rgba(255,255,255,0.2)',
+                color: 'var(--text-primary)',
+                backdropFilter: 'blur(10px)',
+                outline: 'none'
+              }}
+            />
+            <button 
+              onClick={() => {
+                const input = document.getElementById('new-quote') as HTMLInputElement;
+                if (input.value) {
+                  useQuoteStore.getState().addQuote(input.value, '自分');
+                  input.value = '';
+                  setShowAdd(false);
+                }
+              }}
+              style={{ padding: '0 1rem', borderRadius: '0.5rem', border: 'none', background: 'var(--text-primary)', color: 'var(--background-start)', cursor: 'pointer' }}
+            >
+              保存
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
